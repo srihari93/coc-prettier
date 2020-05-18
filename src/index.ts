@@ -93,8 +93,9 @@ export async function activate(context: ExtensionContext): Promise<void> {
   async function checkDocument(): Promise<void> {
     await wait(30)
     let doc = workspace.getDocument(workspace.bufnr)
+    let filetypes = (doc.filetype) ? doc.filetype.split(".") : []
     let languageIds = enabledLanguages(prettierInstance)
-    if (doc && languageIds.indexOf(doc.filetype) !== -1) {
+    if (doc && languageIds.some(lang=>filetypes.includes(lang))) {
       statusItem.show()
     } else {
       statusItem.hide()
